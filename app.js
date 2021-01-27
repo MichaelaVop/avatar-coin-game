@@ -25,8 +25,10 @@ const init = () => {
             moveVertical(avatar, -50);
         } else if(e.key === 'ArrowLeft' || e.key === 'Left') {
             moveHorizontal(avatar, -50);
+            avatar.style.transform = 'scaleX(-1)'
         } else if(e.key === 'ArrowRight' || e.key === 'Right') {
             moveHorizontal(avatar, 50);
+            avatar.style.transform = 'scaleX(1)'
         }
         if (isTouching(avatar, coin)) moveCoin(); 
     });
@@ -34,12 +36,16 @@ const init = () => {
 
 const moveVertical = (element, amount) => {
     const currTop = exactPosition(element.style.top);  
-    element.style.top = `${currTop + amount}px`; 
+    if (currTop + amount > 0 && currTop + amount < window.innerHeight - 200) {
+        element.style.top = `${currTop + amount}px`; 
+    }      
 }
 
 const moveHorizontal = (element, amount) => {
-    const currLeft = exactPosition(element.style.left);  
-    element.style.left = `${currLeft + amount}px`; 
+    const currLeft = exactPosition(element.style.left); 
+    if (currLeft + amount > 0 && currLeft + amount < window.innerWidth - 100) {
+        element.style.left = `${currLeft + amount}px`;
+    } 
 }
 
 const exactPosition = (position) => {
@@ -50,9 +56,12 @@ const exactPosition = (position) => {
 const moveCoin = () => {
     const x = Math.floor(Math.random() * window.innerWidth)
     const y = Math.floor(Math.random() * window.innerHeight)
-
-    coin.style.top = `${y}px`;
-    coin.style.left = `${x}px`;
+    if (x > 0 && x < window.innerWidth - 100) {
+        coin.style.left = `${x}px`;
+    }
+    if (y > 0 && y < window.innerHeight - 100) {
+        coin.style.top = `${y}px`;
+    }   
 }
 
 init();
